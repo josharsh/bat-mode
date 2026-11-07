@@ -1,0 +1,54 @@
+name: Tests and package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            python: "3.13"
+          - os: ubuntu-latest
+            python: "3.10"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+      - name: Install PortAudio on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libportaudio2
+      - name: Install locked dependencies
+        run: uv sync --locked
+      - name: Test signal processing and local server
+        run: uv run --locked python -m unittest discover -s tests -v
+      - name: Build distributions
+        run: uv build
+      - name: Verify bundled assets
+        run: |
+          uv run --locked python - <<'PY'
+          from pathlib import Path
+          import tarfile
+          import zipfile
+          wheel = next(Path('dist').glob('*.whl'))
+          with zipfile.ZipFile(wheel) as archive:
+              names = archive.namelist()
+              assert 'batmode/static/bloom.mp4' in names
+              assert 'batmode/static/index.html' in names
+              assert not any(name.endswith('.jsonl') for name in names)
+          source = next(Path('dist').glob('*.tar.gz'))
+          with tarfile.open(source) as archive:
+              assert any(name.endswith('/Bat Mode.command') for name in archive.getnames())
+          PY

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bat-mode"
+version = "0.1.0"
+description = "Rewind time with your hand. Local acoustic motion sensing with a laptop's speakers and microphone."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Harsh Joshi"}]
+requires-python = ">=3.10"
+dependencies = ["numpy>=2.2,<3", "sounddevice>=0.5,<0.6"]
+
+[project.urls]
+Repository = "https://github.com/josharsh/bat-mode"
+Issues = "https://github.com/josharsh/bat-mode/issues"
+
+[project.scripts]
+bat-mode = "batmode.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["batmode"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/batmode", "/tests", "/tools", "/README.md", "/launch.sh", "/pyproject.toml", "/uv.lock", "/Bat Mode.command", "/LICENSE", "/docs", "/.github", "/.gitignore"]

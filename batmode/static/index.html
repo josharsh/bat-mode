@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111512">
+  <meta name="description" content="Cover your camera. Rewind time with your hand. A local acoustic motion experiment.">
+  <title>Bat Mode — Move through time</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Bat Mode home"><svg viewBox="0 0 34 26" aria-hidden="true"><path d="M2 7 10 12 13 3 17 9 21 3 24 12 32 7 28 20 21 17 17 24 13 17 6 20Z"/></svg> BAT MODE <span>EXPERIMENT 002</span></a>
+    <div class="privacy"><span class="tiny-dot"></span> Local processing <span class="separator">/</span> Camera never accessed</div>
+    <button class="text-button" id="about-button">How it works <span>↗</span></button>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div><div class="eyebrow">YOUR LAPTOP HAS ANOTHER SENSE.</div><h1>Hands in the air.<br><em>Time in your hands.</em></h1></div>
+      <div class="intro-aside"><p>Cover your webcam. Move your hand.<br>Your speakers and microphone do the rest.</p><span class="experiment-tag">ACOUSTIC MOTION · NO CAMERA</span></div>
+    </section>
+
+    <div class="workspace">
+      <section class="stage-panel" aria-label="Interactive time sculpture">
+        <div class="stage-toolbar"><div class="scene-tabs" role="group" aria-label="Choose a scene"><button class="scene-tab active" data-scene="bloom" aria-pressed="true">01 <span>Bloom</span></button><button class="scene-tab" data-scene="orbit" aria-pressed="false">02 <span>Orbit</span></button><button class="scene-tab" data-scene="film" aria-pressed="false">03 <span>Film</span></button><label class="upload-label" for="video-file">Your video ↗</label><input id="video-file" type="file" accept="video/*" hidden></div><button id="fullscreen" class="icon-button" aria-label="Fullscreen scene">⛶</button></div>
+        <div id="stage" class="stage">
+          <canvas id="scene" aria-label="A copper sculpture that blooms and reforms as the timeline moves"></canvas>
+          <video id="video" playsinline muted preload="auto" hidden></video>
+          <div class="stage-top"><span id="scene-caption">KINETIC STUDY / 001</span><span id="mode-badge" class="mode-badge">AWAITING INPUT</span></div>
+          <div id="preview-banner" class="preview-banner" hidden>Mouse preview · sonar is off</div>
+          <div class="stage-bottom"><div><span class="stage-kicker" id="stage-kicker">SUSPENDED IN TIME</span><h2 id="scene-title">The bloom.</h2><p id="scene-subtitle">One movement. A thousand possibilities.</p></div><div class="motion-indicator" id="motion-indicator"><span id="motion-arrow">Ⅱ</span><span id="motion-label">FROZEN</span></div></div>
+          <div id="drop-hint" hidden>Drop a video to control it with your hand</div>
+        </div>
+        <div class="transport"><span id="time-current" class="timecode">00:03.20</span><input type="range" id="timeline" min="0" max="1" step="0.0001" value="0.32" aria-label="Time position"><span id="time-duration" class="timecode">00:10.00</span><button id="reset-time" class="icon-button" aria-label="Return to the middle of the scene">↺</button></div>
+        <div class="gesture-legend"><span><b>↗</b> Push to move forward</span><span><b>↙</b> Pull to rewind</span><span><b>Ⅱ</b> Hold still to freeze</span></div>
+      </section>
+
+      <aside class="control-panel">
+        <div class="panel-heading"><span class="eyebrow">THE CONNECTION</span><span id="connection-state"><span class="tiny-dot"></span> Connecting</span></div>
+        <div class="sonar-symbol" aria-hidden="true"><svg viewBox="0 0 180 110"><path d="M30 86 Q90 -12 150 86M48 86 Q90 17 132 86M67 86 Q90 46 113 86"/><circle cx="90" cy="87" r="5"/></svg><span id="frequency-label">SOUND BECOMES A SENSOR</span></div>
+        <div class="status-copy" aria-live="polite"><h2 id="status-title">Meet your sixth sense.</h2><p id="status-message">Your laptop sends a high-frequency tone and listens for changes as your hand moves.</p></div>
+        <div class="calibration-progress" id="calibration-progress" hidden><div><i id="calibration-fill"></i></div><span id="calibration-step">Finding an echo</span></div>
+        <button id="start" class="primary-button"><span>Start sonar</span><span>↗</span></button>
+        <button id="preview" class="secondary-button">Explore with your mouse</button>
+        <button id="skip-check" class="text-button small" hidden>Skip gesture check · use unverified signal</button>
+        <div class="setup-note"><span>01</span><p>Use built-in speakers. Start at moderate volume.</p></div><div class="setup-note"><span>02</span><p>Move an open palm 20–50 cm from the screen.</p></div><div class="setup-note"><span>03</span><p>On macOS, set Mic Mode to <strong>Standard</strong>.</p></div>
+        <details class="settings" id="settings"><summary>Audio & sensitivity <span>+</span></summary><div class="settings-body"><label for="input-device">Microphone</label><select id="input-device"></select><label for="output-device">Speakers</label><select id="output-device"></select><label for="level">Probe level <output id="level-value">12%</output></label><input id="level" type="range" min="0.02" max="0.25" step="0.01" value="0.12"><p class="field-note">Applied on start. Stop if the tone is uncomfortable.</p><label for="sensitivity">Motion threshold <output id="sensitivity-value">8 dB</output></label><input id="sensitivity" type="range" min="4" max="20" step="1" value="8"><p class="field-note">Lower detects gentler motion; higher rejects noise.</p><label for="scrub-gain">Scrub speed <output id="gain-value">1×</output></label><input id="scrub-gain" type="range" min="0.5" max="3" step="0.25" value="1"><button id="recalibrate" class="secondary-button" disabled>Calibrate again</button></div></details>
+      </aside>
+    </div>
+
+    <section class="evidence-panel" aria-label="Live acoustic evidence">
+      <div class="evidence-copy"><div class="eyebrow">THE SOUND BEHIND THE MAGIC</div><h2>See what your<br>microphone hears.</h2><p id="evidence-description">Real frequency measurements appear here when sonar starts. Movement shifts the reflected tone.</p><button id="probe-toggle" class="probe-button" disabled aria-pressed="false"><span class="switch-track"><i></i></span><span id="probe-label">Probe off</span></button><span class="field-note">Switch off the tone to test the effect.</span></div>
+      <div class="spectrum-area"><div class="spectrum-labels"><span>← AWAY</span><span id="carrier-label">CARRIER</span><span>TOWARD →</span></div><canvas id="spectrum" aria-label="Measured sound spectrum around the emitted tone"></canvas><div class="spectrum-axis"><span>−350 Hz</span><span>DOPPLER SHIFT</span><span>+350 Hz</span></div></div>
+      <div class="signal-stats"><div><span>PROBE CLARITY</span><strong id="snr">— <small>dB</small></strong></div><div><span>MOTION</span><strong id="direction-stat">—</strong></div><div><span>GESTURE CHECK</span><strong id="verified-stat">Not run</strong></div><button class="text-button small" id="export">Export diagnostics ↗</button></div>
+    </section>
+    <footer><span>A small experiment in seeing with sound.</span><span>Inspired by <a href="https://www.microsoft.com/en-us/research/project/soundwave-using-the-doppler-effect-to-sense-gestures/" target="_blank" rel="noreferrer">SoundWave</a> & <a href="https://github.com/DanielRapp/doppler" target="_blank" rel="noreferrer">doppler</a><span class="footer-dot">·</span> BUILT FOR CURIOSITY</span></footer>
+  </main>
+
+  <dialog id="about-dialog"><button class="dialog-close icon-button" aria-label="Close explanation">×</button><div class="eyebrow">A LITTLE PHYSICS. A LITTLE WONDER.</div><h2>Your laptop is<br>listening to motion.</h2><p>The speakers emit a tone near 19 kHz. When sound bounces off your moving hand, its frequency shifts—the same Doppler effect that changes the pitch of a passing siren.</p><div class="explanation-row"><span>01</span><p><strong>Emit.</strong> A quiet high-frequency tone travels from the speakers.</p></div><div class="explanation-row"><span>02</span><p><strong>Listen.</strong> The microphone measures the original tone and shifted reflections.</p></div><div class="explanation-row"><span>03</span><p><strong>Move time.</strong> Higher frequencies advance the scene. Lower frequencies rewind it.</p></div><p>This senses motion, not a hand's identity or exact location. Nearby movement can also register. A stationary hand should leave time frozen.</p><p>Python handles the microphone locally. This page never requests your camera or microphone, uploads audio, or records it to disk. Stop sonar or close the page to release the microphone.</p><p class="field-note">Bloom and Orbit are original time-controlled animations. Film is an original rendered clip. Your own videos stay in this browser.</p></dialog>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>

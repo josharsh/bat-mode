@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.DS_Store
+node_modules/
+dist/
+build/
+.env
+.env.*
+samples.jsonl
+events.jsonl
+narration.log
+sense_err.txt
+bat-mode-diagnostics*.json
